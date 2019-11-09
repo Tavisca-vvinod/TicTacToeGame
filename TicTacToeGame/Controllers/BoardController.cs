@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -37,7 +37,7 @@ namespace TicTacToeGame.Controllers
         }
 
         // PUT: api/Board/5
-        public void Put(int id)
+        public String Put(int id)
         {
             int y = (id % 10) - 1;
             int x = (id / 10) - 1;
@@ -45,11 +45,65 @@ namespace TicTacToeGame.Controllers
             if (countOfTimesBoardIsCalled % 2 != 0)//player 1's turn
             {
                 board.boardcoordinates[x, y] = 'O';
+                if (ifItsAwin('O')==1)
+                {
+                    return "Player 1 wins";
+                }
             }
             else //playes 2's turn
             {
                 board.boardcoordinates[x, y] = 'X';
+                if (ifItsAwin('X') == 1)
+                {
+                    return "Player 2 wins";
+                }
             }
+            return null;
+        }
+
+        public static int ifItsAwin(Char x)
+        {
+            //row 1 win
+            if (board.boardcoordinates[0, 0] == x && board.boardcoordinates[0, 1] == x && board.boardcoordinates[0, 2] == x)
+            {
+                return 1;
+            }
+            //row 2 win
+            if (board.boardcoordinates[1, 0] == x && board.boardcoordinates[1, 1] == x && board.boardcoordinates[1, 2] == x)
+            {
+                return 1;
+            }
+            //row 3 win
+            if (board.boardcoordinates[2, 0] == x && board.boardcoordinates[2, 1] == x && board.boardcoordinates[2, 2] == x)
+            {
+                return 1;
+            }
+            //column 1 win
+            if (board.boardcoordinates[0, 0] == x && board.boardcoordinates[1, 0] == x && board.boardcoordinates[2, 0] == x)
+            {
+                return 1;
+            }
+            //column 2 win
+            if (board.boardcoordinates[0, 1] == x && board.boardcoordinates[1, 1] == x && board.boardcoordinates[2, 1] == x)
+            {
+                return 1;
+            }
+            //column 3 win
+            if (board.boardcoordinates[0, 2] == x && board.boardcoordinates[1, 2] == x && board.boardcoordinates[2, 2] == x)
+            {
+                return 1;
+            }
+            //diagonal win 1
+            if (board.boardcoordinates[0, 0]==x && board.boardcoordinates[1, 1]==x && board.boardcoordinates[2, 2]==x)
+            {
+                return 1;
+            }
+            //diagonal win 2
+            if (board.boardcoordinates[0,2]==x && board.boardcoordinates[1,1]==x && board.boardcoordinates[2,0]==x)
+            {
+                return 1;
+            }
+            return 0;
         }
 
         // POST: api/Board
