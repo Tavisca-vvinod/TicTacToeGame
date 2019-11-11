@@ -16,14 +16,14 @@ namespace TicTacToeGame.Controllers
         // GET: api/Board
         public String Get()
         {
-            String boardview = "";
+            String boardview = "\r\n";
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++) 
                 {
                     boardview = boardview + board.boardcoordinates[i,j];
                 }
-                boardview = boardview + "\n";
+                boardview = boardview + "\r\n";
             }
             return boardview;
         }
@@ -42,12 +42,13 @@ namespace TicTacToeGame.Controllers
             int y = (id % 10) - 1;
             int x = (id / 10) - 1;
             countOfTimesBoardIsCalled++;
-            if (countOfTimesBoardIsCalled % 2 != 0)//player 1's turn
+            if (countOfTimesBoardIsCalled % 2 != 0) //player 1's turn
             {
                 board.boardcoordinates[x, y] = 'O';
                 if (ifItsAwin('O')==1)
                 {
-                    return "Player 1 wins";
+                    resetBoard();
+                    return "Player 1 wins, board has been resetted";
                 }
             }
             else //playes 2's turn
@@ -55,10 +56,43 @@ namespace TicTacToeGame.Controllers
                 board.boardcoordinates[x, y] = 'X';
                 if (ifItsAwin('X') == 1)
                 {
-                    return "Player 2 wins";
+                    resetBoard();
+                    return "Player 2 wins, board has been resetted";      
                 }
             }
+            if (isNobodyWins()==1)
+            {
+                resetBoard();
+                return "Nobody wins, board has been resetted";
+            }
             return null;
+        }
+
+        public static void resetBoard()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    board.boardcoordinates[i, j] = '-';
+                }
+            }
+            countOfTimesBoardIsCalled = 0;
+        }
+
+        public static int isNobodyWins()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if(board.boardcoordinates[i, j] == '-')
+                    {
+                        return 0;
+                    }
+                }
+            }
+            return 1;
         }
 
         public static int ifItsAwin(Char x)
