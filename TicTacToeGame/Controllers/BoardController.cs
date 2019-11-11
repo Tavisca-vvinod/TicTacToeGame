@@ -17,11 +17,11 @@ namespace TicTacToeGame.Controllers
         public String Get()
         {
             String boardview = "\r\n";
-            for (int i = 0; i < 3; i++)
+            for (int rowIndex = 0; rowIndex < 3; rowIndex++)
             {
-                for (int j = 0; j < 3; j++) 
+                for (int colIndex = 0; colIndex < 3; colIndex++) 
                 {
-                    boardview = boardview + board.boardcoordinates[i,j];
+                    boardview = boardview + board.boardcoordinates[rowIndex,colIndex];
                 }
                 boardview = boardview + "\r\n";
             }
@@ -31,20 +31,20 @@ namespace TicTacToeGame.Controllers
         // GET: api/Board/5
         public string Get(int id)
         {
-            int y = (id % 10) - 1;
-            int x = (id / 10) - 1;
-            return board.boardcoordinates[x, y] + "";
+            int rowCoordinate = (id % 10) - 1;
+            int colCoordinate = (id / 10) - 1;
+            return board.boardcoordinates[colCoordinate, rowCoordinate] + "";
         }
 
         // PUT: api/Board/5
         public String Put(int id)
         {
-            int y = (id % 10) - 1;
-            int x = (id / 10) - 1;
+            int rowCoordinate = (id % 10) - 1;
+            int colCoordinate = (id / 10) - 1;
             countOfTimesBoardIsCalled++;
             if (countOfTimesBoardIsCalled % 2 != 0) //player 1's turn
             {
-                board.boardcoordinates[x, y] = 'O';
+                board.boardcoordinates[colCoordinate, rowCoordinate] = 'O';
                 if (ifItsAwin('O')==1)
                 {
                     resetBoard();
@@ -53,7 +53,7 @@ namespace TicTacToeGame.Controllers
             }
             else //playes 2's turn
             {
-                board.boardcoordinates[x, y] = 'X';
+                board.boardcoordinates[colCoordinate, rowCoordinate] = 'X';
                 if (ifItsAwin('X') == 1)
                 {
                     resetBoard();
@@ -70,11 +70,12 @@ namespace TicTacToeGame.Controllers
 
         public static void resetBoard()
         {
-            for (int i = 0; i < 3; i++)
+            for (int rowIndex = 0; rowIndex < 3; rowIndex++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int colIndex = 0; colIndex < 3; colIndex++)
                 {
-                    board.boardcoordinates[i, j] = '-';
+
+                    board.boardcoordinates[rowIndex, colIndex] = '-';
                 }
             }
             countOfTimesBoardIsCalled = 0;
@@ -82,11 +83,12 @@ namespace TicTacToeGame.Controllers
 
         public static int isNobodyWins()
         {
-            for (int i = 0; i < 3; i++)
+            for (int rowIndex = 0; rowIndex < 3; rowIndex++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int colIndex = 0; colIndex < 3; colIndex++)
                 {
-                    if(board.boardcoordinates[i, j] == '-')
+
+                    if(board.boardcoordinates[rowIndex, colIndex] == '-')
                     {
                         return 0;
                     }
@@ -95,45 +97,45 @@ namespace TicTacToeGame.Controllers
             return 1;
         }
 
-        public static int ifItsAwin(Char x)
+        public static int ifItsAwin(Char currentPlayersSymbol)
         {
             //row 1 win
-            if (board.boardcoordinates[0, 0] == x && board.boardcoordinates[0, 1] == x && board.boardcoordinates[0, 2] == x)
+            if (board.boardcoordinates[0, 0] == currentPlayersSymbol && board.boardcoordinates[0, 1] == currentPlayersSymbol && board.boardcoordinates[0, 2] == currentPlayersSymbol)
             {
                 return 1;
             }
             //row 2 win
-            if (board.boardcoordinates[1, 0] == x && board.boardcoordinates[1, 1] == x && board.boardcoordinates[1, 2] == x)
+            if (board.boardcoordinates[1, 0] == currentPlayersSymbol && board.boardcoordinates[1, 1] == currentPlayersSymbol && board.boardcoordinates[1, 2] == currentPlayersSymbol)
             {
                 return 1;
             }
             //row 3 win
-            if (board.boardcoordinates[2, 0] == x && board.boardcoordinates[2, 1] == x && board.boardcoordinates[2, 2] == x)
+            if (board.boardcoordinates[2, 0] == currentPlayersSymbol && board.boardcoordinates[2, 1] == currentPlayersSymbol && board.boardcoordinates[2, 2] == currentPlayersSymbol)
             {
                 return 1;
             }
             //column 1 win
-            if (board.boardcoordinates[0, 0] == x && board.boardcoordinates[1, 0] == x && board.boardcoordinates[2, 0] == x)
+            if (board.boardcoordinates[0, 0] == currentPlayersSymbol && board.boardcoordinates[1, 0] == currentPlayersSymbol && board.boardcoordinates[2, 0] == currentPlayersSymbol)
             {
                 return 1;
             }
             //column 2 win
-            if (board.boardcoordinates[0, 1] == x && board.boardcoordinates[1, 1] == x && board.boardcoordinates[2, 1] == x)
+            if (board.boardcoordinates[0, 1] == currentPlayersSymbol && board.boardcoordinates[1, 1] == currentPlayersSymbol && board.boardcoordinates[2, 1] == currentPlayersSymbol)
             {
                 return 1;
             }
             //column 3 win
-            if (board.boardcoordinates[0, 2] == x && board.boardcoordinates[1, 2] == x && board.boardcoordinates[2, 2] == x)
+            if (board.boardcoordinates[0, 2] == currentPlayersSymbol && board.boardcoordinates[1, 2] == currentPlayersSymbol && board.boardcoordinates[2, 2] == currentPlayersSymbol)
             {
                 return 1;
             }
             //diagonal win 1
-            if (board.boardcoordinates[0, 0]==x && board.boardcoordinates[1, 1]==x && board.boardcoordinates[2, 2]==x)
+            if (board.boardcoordinates[0, 0]==currentPlayersSymbol && board.boardcoordinates[1, 1]==currentPlayersSymbol && board.boardcoordinates[2, 2]==currentPlayersSymbol)
             {
                 return 1;
             }
             //diagonal win 2
-            if (board.boardcoordinates[0,2]==x && board.boardcoordinates[1,1]==x && board.boardcoordinates[2,0]==x)
+            if (board.boardcoordinates[0,2]==currentPlayersSymbol && board.boardcoordinates[1,1]==currentPlayersSymbol && board.boardcoordinates[2,0]==currentPlayersSymbol)
             {
                 return 1;
             }
